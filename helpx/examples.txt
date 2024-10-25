@@ -1,0 +1,1089 @@
+# ===========================
+# File: helpx/examples.txt
+# ===========================
+
+=== cv2.Canny ===
+import cv2
+import numpy as np
+
+# Read the image in grayscale
+image = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Apply Canny edge detection
+edges = cv2.Canny(image, threshold1=100, threshold2=200)
+
+# Display the original and edge-detected images
+cv2.imshow('Original Image', image)
+cv2.imshow('Canny Edges', edges)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.getRotationMatrix2D ===
+import cv2
+import numpy as np
+
+# Read the image
+image = cv2.imread('image.jpg')
+
+# Get image dimensions
+(h, w) = image.shape[:2]
+center = (w // 2, h // 2)
+
+# Define rotation parameters
+angle = 45
+scale = 1.0
+
+# Get rotation matrix
+M = cv2.getRotationMatrix2D(center, angle, scale)
+
+# Perform the rotation
+rotated = cv2.warpAffine(image, M, (w, h))
+
+# Display the original and rotated images
+cv2.imshow('Original Image', image)
+cv2.imshow('Rotated Image', rotated)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.cvtColor ===
+import cv2
+
+# Read the image
+image = cv2.imread('image.jpg')
+
+# Convert BGR to Grayscale
+gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# Display the original and grayscale images
+cv2.imshow('Original Image', image)
+cv2.imshow('Grayscale Image', gray)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.convertScaleAbs ===
+import cv2
+import numpy as np
+
+# Read the image
+image = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Apply Sobel operator to get gradients
+grad_x = cv2.Sobel(image, cv2.CV_16S, 1, 0)
+grad_y = cv2.Sobel(image, cv2.CV_16S, 0, 1)
+
+# Convert gradients to absolute values
+abs_grad_x = cv2.convertScaleAbs(grad_x)
+abs_grad_y = cv2.convertScaleAbs(grad_y)
+
+# Combine gradients
+gradient = cv2.addWeighted(abs_grad_x, 0.5, abs_grad_y, 0.5, 0)
+
+# Display the gradient image
+cv2.imshow('Gradient', gradient)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.circle ===
+import cv2
+
+# Create a black image
+image = cv2.imread('image.jpg')
+
+# Define center, radius, color, and thickness
+center = (250, 250)
+radius = 50
+color = (0, 255, 0)  # Green
+thickness = 2
+
+# Draw the circle
+cv2.circle(image, center, radius, color, thickness)
+
+# Display the image with the circle
+cv2.imshow('Circle', image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.HoughCircles ===
+import cv2
+import numpy as np
+
+# Read the image in grayscale
+image = cv2.imread('circles.jpg', cv2.IMREAD_GRAYSCALE)
+output = cv2.imread('circles.jpg')
+
+# Apply a blur to reduce noise
+blur = cv2.medianBlur(image, 5)
+
+# Detect circles using HoughCircles
+circles = cv2.HoughCircles(blur, cv2.HOUGH_GRADIENT, dp=1.2, minDist=50,
+                           param1=50, param2=30, minRadius=0, maxRadius=0)
+
+# If circles are detected, draw them
+if circles is not None:
+    circles = np.round(circles[0, :]).astype("int")
+    for (x, y, r) in circles:
+        cv2.circle(output, (x, y), r, (0, 255, 0), 4)
+        cv2.rectangle(output, (x - 5, y - 5), (x + 5, y + 5), (0, 128, 255), -1)
+
+# Display the output image with detected circles
+cv2.imshow('Detected Circles', output)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.resize ===
+import cv2
+
+# Read the image
+image = cv2.imread('image.jpg')
+
+# Resize the image to 50% of its original size
+resized_image = cv2.resize(image, (0, 0), fx=0.5, fy=0.5)
+
+# Display the original and resized images
+cv2.imshow('Original Image', image)
+cv2.imshow('Resized Image', resized_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.zeros_like ===
+import cv2
+import numpy as np
+
+# Read the image
+image = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Create a zero array with the same shape as the image
+zero_image = np.zeros_like(image)
+
+# Display the original and zero images
+cv2.imshow('Original Image', image)
+cv2.imshow('Zero Image', zero_image)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.calcHist ===
+import cv2
+import matplotlib.pyplot as plt
+
+# Read the image
+image = cv2.imread('image.jpg')
+color = ('b','g','r')
+
+# Calculate and plot histogram for each channel
+plt.figure()
+for i, col in enumerate(color):
+    hist = cv2.calcHist([image],[i],None,[256],[0,256])
+    plt.plot(hist, color = col)
+    plt.xlim([0,256])
+plt.title('Color Histogram')
+plt.show()
+
+=== cv2.threshold ===
+import cv2
+
+# Read the image in grayscale
+image = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Apply binary thresholding
+ret, thresh = cv2.threshold(image, 127, 255, cv2.THRESH_BINARY)
+
+# Display the original and thresholded images
+cv2.imshow('Original Image', image)
+cv2.imshow('Thresholded Image', thresh)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.blur ===
+import cv2
+
+# Read the image
+image = cv2.imread('image.jpg')
+
+# Apply average blurring with a 5x5 kernel
+blurred = cv2.blur(image, (5, 5))
+
+# Display the original and blurred images
+cv2.imshow('Original Image', image)
+cv2.imshow('Blurred Image', blurred)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.waitKey ===
+import cv2
+
+# Create a black image
+image = cv2.imread('image.jpg')
+
+# Display the image
+cv2.imshow('Image', image)
+
+# Wait for a key press indefinitely or for a specified amount of time in milliseconds
+key = cv2.waitKey(0)  # Wait indefinitely
+# key = cv2.waitKey(5000)  # Wait for 5 seconds
+
+# Print the key pressed
+print(f"Key pressed: {key}")
+
+cv2.destroyAllWindows()
+
+=== cv2.destroyAllWindows ===
+import cv2
+
+# Read the image
+image = cv2.imread('image.jpg')
+
+# Display the image
+cv2.imshow('Image', image)
+
+# Wait for a key press
+cv2.waitKey(0)
+
+# Destroy all OpenCV windows
+cv2.destroyAllWindows()
+
+=== cv2.imshow ===
+import cv2
+
+# Read the image
+image = cv2.imread('image.jpg')
+
+# Display the image in a window named 'Display Window'
+cv2.imshow('Display Window', image)
+
+# Wait for a key press and close the window
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.imread ===
+import cv2
+
+# Read the image in color
+image_color = cv2.imread('image.jpg', cv2.IMREAD_COLOR)
+
+# Read the image in grayscale
+image_gray = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Display both images
+cv2.imshow('Color Image', image_color)
+cv2.imshow('Grayscale Image', image_gray)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.warpAffine ===
+import cv2
+import numpy as np
+
+# Read the image
+image = cv2.imread('image.jpg')
+
+# Define the rotation matrix
+rows, cols = image.shape[:2]
+M = cv2.getRotationMatrix2D((cols/2, rows/2), 45, 1)
+
+# Apply affine transformation
+rotated = cv2.warpAffine(image, M, (cols, rows))
+
+# Display the original and rotated images
+cv2.imshow('Original Image', image)
+cv2.imshow('Rotated Image', rotated)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.GaussianBlur ===
+import cv2
+
+# Read the image
+image = cv2.imread('image.jpg')
+
+# Apply Gaussian Blur with a 5x5 kernel
+blurred = cv2.GaussianBlur(image, (5, 5), 0)
+
+# Display the original and blurred images
+cv2.imshow('Original Image', image)
+cv2.imshow('Gaussian Blurred Image', blurred)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.split ===
+import cv2
+
+# Read the color image
+image = cv2.imread('image.jpg')
+
+# Split the image into B, G, R channels
+b, g, r = cv2.split(image)
+
+# Display the channels
+cv2.imshow('Blue Channel', b)
+cv2.imshow('Green Channel', g)
+cv2.imshow('Red Channel', r)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.filter2D ===
+import cv2
+import numpy as np
+
+# Read the image in grayscale
+image = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Define a kernel (e.g., sharpening kernel)
+kernel = np.array([[0, -1, 0],
+                   [-1, 5,-1],
+                   [0, -1, 0]])
+
+# Apply the filter
+filtered = cv2.filter2D(image, -1, kernel)
+
+# Display the original and filtered images
+cv2.imshow('Original Image', image)
+cv2.imshow('Filtered Image', filtered)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== cv2.Laplacian ===
+import cv2
+import numpy as np
+
+# Read the image in grayscale
+image = cv2.imread('image.jpg', cv2.IMREAD_GRAYSCALE)
+
+# Apply Laplacian operator
+laplacian = cv2.Laplacian(image, cv2.CV_64F)
+
+# Convert back to uint8
+laplacian = cv2.convertScaleAbs(laplacian)
+
+# Display the original and Laplacian images
+cv2.imshow('Original Image', image)
+cv2.imshow('Laplacian', laplacian)
+cv2.waitKey(0)
+cv2.destroyAllWindows()
+
+=== matplotlib.pyplot.tight_layout ===
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Sample data
+x = np.linspace(0, 10, 100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+# Create subplots
+fig, (ax1, ax2) = plt.subplots(2, 1)
+
+# Plot data
+ax1.plot(x, y1)
+ax1.set_title('Sine Wave')
+
+ax2.plot(x, y2)
+ax2.set_title('Cosine Wave')
+
+# Adjust layout
+plt.tight_layout()
+
+# Display the plots
+plt.show()
+
+=== matplotlib.pyplot.figure ===
+import matplotlib.pyplot as plt
+
+# Create a new figure
+plt.figure(figsize=(8, 6))
+
+# Plot some data
+plt.plot([1, 2, 3], [4, 5, 6])
+
+# Set title
+plt.title('Sample Figure')
+
+# Show the plot
+plt.show()
+
+=== matplotlib.pyplot.set_title ===
+import matplotlib.pyplot as plt
+
+# Sample data
+x = [1, 2, 3]
+y = [4, 5, 6]
+
+# Create a plot
+plt.plot(x, y)
+
+# Set the title of the current axes
+plt.gca().set_title('Set Title Example')
+
+# Display the plot
+plt.show()
+
+=== matplotlib.pyplot.subplot ===
+import matplotlib.pyplot as plt
+
+# Create a figure
+plt.figure()
+
+# First subplot
+plt.subplot(2, 1, 1)
+plt.plot([1, 2, 3], [4, 5, 6])
+plt.title('First Subplot')
+
+# Second subplot
+plt.subplot(2, 1, 2)
+plt.plot([1, 2, 3], [6, 5, 4])
+plt.title('Second Subplot')
+
+# Adjust layout
+plt.tight_layout()
+
+# Display the plots
+plt.show()
+
+=== matplotlib.pyplot.title ===
+import matplotlib.pyplot as plt
+
+# Sample data
+x = [1, 2, 3]
+y = [4, 5, 6]
+
+# Create a plot
+plt.plot(x, y)
+
+# Set the title using plt.title
+plt.title('Using plt.title')
+
+# Display the plot
+plt.show()
+
+=== matplotlib.pyplot.subplots ===
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Sample data
+x = np.linspace(0, 10, 100)
+y1 = np.sin(x)
+y2 = np.cos(x)
+
+# Create subplots
+fig, axes = plt.subplots(2, 1, figsize=(8, 6))
+
+# Plot on the first subplot
+axes[0].plot(x, y1)
+axes[0].set_title('Sine Wave')
+
+# Plot on the second subplot
+axes[1].plot(x, y2)
+axes[1].set_title('Cosine Wave')
+
+# Adjust layout
+plt.tight_layout()
+
+# Display the plots
+plt.show()
+
+=== matplotlib.pyplot.axis ===
+import matplotlib.pyplot as plt
+
+# Sample data
+x = [1, 2, 3]
+y = [4, 5, 6]
+
+# Create a plot
+plt.plot(x, y)
+
+# Set axis limits
+plt.axis([0, 4, 0, 7])
+
+# Display the plot
+plt.show()
+
+=== matplotlib.pyplot.set_xlim ===
+import matplotlib.pyplot as plt
+
+# Sample data
+x = range(10)
+y = [i**2 for i in x]
+
+# Create a plot
+plt.plot(x, y)
+
+# Set x-axis limits
+plt.gca().set_xlim(2, 8)
+
+# Set title
+plt.title('Set X-axis Limits')
+
+# Display the plot
+plt.show()
+
+=== matplotlib.pyplot.show ===
+import matplotlib.pyplot as plt
+
+# Sample data
+x = [1, 2, 3]
+y = [4, 5, 6]
+
+# Create a plot
+plt.plot(x, y)
+
+# Set title
+plt.title('Display Plot')
+
+# Show the plot
+plt.show()
+
+=== matplotlib.pyplot.plot ===
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Sample data
+x = np.linspace(0, 2 * np.pi, 100)
+y = np.sin(x)
+
+# Create a plot
+plt.plot(x, y, label='Sine Wave')
+
+# Add title and labels
+plt.title('Sine Function')
+plt.xlabel('Angle [rad]')
+plt.ylabel('sin(x)')
+
+# Add legend
+plt.legend()
+
+# Display the plot
+plt.show()
+
+=== numpy.clip ===
+import numpy as np
+
+# Create an array
+arr = np.array([1, 2, 3, 4, 5])
+
+# Clip values below 3 to 3 and above 4 to 4
+clipped = np.clip(arr, 3, 4)
+
+print("Original array:", arr)
+print("Clipped array:", clipped)
+
+=== numpy.normal ===
+import numpy as np
+
+# Generate 1000 samples from a normal distribution with mean=0 and std=1
+samples = np.random.normal(0, 1, 1000)
+
+# Compute mean and standard deviation
+mean = np.mean(samples)
+std = np.std(samples)
+
+print(f"Mean: {mean}, Standard Deviation: {std}")
+
+=== numpy.copy ===
+import numpy as np
+
+# Create an array
+original = np.array([1, 2, 3])
+
+# Create a copy of the array
+copied = np.copy(original)
+
+# Modify the copy
+copied[0] = 10
+
+print("Original array:", original)
+print("Copied array:", copied)
+
+=== numpy.reshape ===
+import numpy as np
+
+# Create a 1D array
+arr = np.arange(12)
+
+# Reshape to 3x4
+reshaped = arr.reshape((3, 4))
+
+print("Original array:\n", arr)
+print("Reshaped array:\n", reshaped)
+
+=== print ===
+# Example usage of print is inherent in all other examples.
+
+=== numpy.fit_transform ===
+from sklearn.preprocessing import StandardScaler
+import numpy as np
+
+# Sample data
+data = np.array([[1, 2], [3, 4], [5, 6]])
+
+# Initialize the scaler
+scaler = StandardScaler()
+
+# Fit and transform the data
+scaled_data = scaler.fit_transform(data)
+
+print("Original Data:\n", data)
+print("Scaled Data:\n", scaled_data)
+
+=== numpy.find ===
+import numpy as np
+
+# Create an array
+arr = np.array([1, 2, 3, 4, 5, 6])
+
+# Find indices where values are greater than 3
+indices = np.where(arr > 3)
+
+print("Indices where values > 3:", indices[0])
+
+=== numpy.read ===
+# numpy does not have a direct 'read' function, but you can use numpy.loadtxt or numpy.genfromtxt
+import numpy as np
+
+# Assuming a text file 'data.txt' with numerical data
+# data = np.loadtxt('data.txt')
+
+# For demonstration, creating data manually
+data = np.array([[1, 2, 3], [4, 5, 6]])
+
+print("Data:\n", data)
+
+=== collections.defaultdict ===
+from collections import defaultdict
+
+# Create a defaultdict with list as the default factory
+dd = defaultdict(list)
+
+# Append items
+dd['fruits'].append('apple')
+dd['fruits'].append('banana')
+dd['vegetables'].append('carrot')
+
+print(dd)
+
+=== list.append ===
+# Example usage of list.append is inherent in the defaultdict example above.
+
+=== numpy.array ===
+import numpy as np
+
+# Create a list
+lst = [1, 2, 3, 4, 5]
+
+# Convert to a NumPy array
+arr = np.array(lst)
+
+print("List:", lst)
+print("NumPy Array:", arr)
+
+=== numpy.randint ===
+import numpy as np
+
+# Generate 5 random integers between 0 and 10
+random_integers = np.random.randint(0, 10, size=5)
+
+print("Random Integers:", random_integers)
+
+=== numpy.sub ===
+import numpy as np
+
+# Create two arrays
+a = np.array([5, 10, 15])
+b = np.array([2, 3, 4])
+
+# Subtract arrays
+result = np.subtract(a, b)
+
+print("a:", a)
+print("b:", b)
+print("a - b:", result)
+
+=== numpy.where ===
+import numpy as np
+
+# Create an array
+arr = np.array([1, 2, 3, 4, 5, 6])
+
+# Find indices where values are even
+even_indices = np.where(arr % 2 == 0)
+
+print("Indices of even numbers:", even_indices[0])
+
+=== len ===
+# Example usage of len is inherent in other examples.
+
+=== numpy.sort ===
+import numpy as np
+
+# Create an array
+arr = np.array([3, 1, 4, 1, 5, 9, 2])
+
+# Sort the array
+sorted_arr = np.sort(arr)
+
+print("Original array:", arr)
+print("Sorted array:", sorted_arr)
+
+=== numpy.ones ===
+import numpy as np
+
+# Create a 3x3 array of ones
+ones_array = np.ones((3, 3))
+
+print("Ones Array:\n", ones_array)
+
+=== Custom.calculate_tf ===
+from collections import defaultdict
+
+def calculate_tf(doc):
+    """
+    Calculate Term Frequency for each term in a document.
+    """
+    tf = defaultdict(lambda: 0)
+    words = doc.split()
+    for word in words:
+        tf[word] += 1
+    for word in tf:
+        tf[word] = tf[word] / len(words)
+    return tf
+
+# Sample document
+doc = "the sun is bright and the sun is shining"
+
+# Calculate TF
+tf_scores = calculate_tf(doc)
+
+print("TF Scores:", dict(tf_scores))
+
+=== Custom.calculate_idf ===
+import math
+from collections import defaultdict
+
+def calculate_idf(documents):
+    """
+    Calculate Inverse Document Frequency for each term in the corpus.
+    """
+    N = len(documents)
+    idf = defaultdict(lambda: 0)
+    for doc in documents:
+        for term in set(doc.split()):
+            idf[term] += 1
+    for term in idf:
+        idf[term] = math.log(N / (1 + idf[term]))
+    return idf
+
+# Sample documents
+docs = [
+    "the sky is blue",
+    "the sun is bright",
+    "the sun in the sky is bright",
+    "we can see the shining sun the bright sun"
+]
+
+# Calculate IDF
+idf_scores = calculate_idf(docs)
+
+print("IDF Scores:", dict(idf_scores))
+
+=== Custom.clean_text ===
+import re
+import string
+
+def clean_text(text):
+    """
+    Clean the input text by removing punctuation and lowercasing.
+    """
+    text = text.lower()
+    text = re.sub(f'[{re.escape(string.punctuation)}]', '', text)
+    return text
+
+# Sample text
+text = "Hello, World! This is a test."
+
+# Clean the text
+cleaned = clean_text(text)
+
+print("Original Text:", text)
+print("Cleaned Text:", cleaned)
+
+=== Custom.lower_case ===
+def lower_case(text):
+    """
+    Convert text to lowercase.
+    """
+    return text.lower()
+
+# Sample text
+text = "HeLLo WoRLd!"
+
+# Convert to lowercase
+lowered = lower_case(text)
+
+print("Original Text:", text)
+print("Lowercase Text:", lowered)
+
+=== Custom.match_sentences ===
+def match_sentences(sentence1, sentence2):
+    """
+    Check if two sentences match exactly.
+    """
+    return sentence1.strip().lower() == sentence2.strip().lower()
+
+# Sample sentences
+s1 = "The quick brown fox jumps over the lazy dog."
+s2 = "the quick brown fox jumps over the lazy dog."
+
+# Check if they match
+match = match_sentences(s1, s2)
+
+print(f"Do the sentences match? {match}")
+
+=== Custom.remove_accents ===
+import unicodedata
+
+def remove_accents(text):
+    """
+    Remove accents from the input text.
+    """
+    nfkd_form = unicodedata.normalize('NFKD', text)
+    return ''.join([c for c in nfkd_form if not unicodedata.combining(c)])
+
+# Sample text with accents
+text = "Café Münchner Kindl"
+
+# Remove accents
+cleaned = remove_accents(text)
+
+print("Original Text:", text)
+print("Cleaned Text:", cleaned)
+
+=== Custom.remove_punctuations ===
+import string
+
+def remove_punctuations(text):
+    """
+    Remove punctuation from the input text.
+    """
+    return text.translate(str.maketrans('', '', string.punctuation))
+
+# Sample text
+text = "Hello, World! This is a test."
+
+# Remove punctuations
+cleaned = remove_punctuations(text)
+
+print("Original Text:", text)
+print("Cleaned Text:", cleaned)
+
+=== nltk.PorterStemmer ===
+from nltk.stem import PorterStemmer
+
+# Initialize the stemmer
+stemmer = PorterStemmer()
+
+# Sample words
+words = ["running", "jumps", "easily", "fairly"]
+
+# Stem the words
+stemmed = [stemmer.stem(word) for word in words]
+
+print("Original words:", words)
+print("Stemmed words:", stemmed)
+
+=== nltk.WordNetLemmatizer ===
+from nltk.stem import WordNetLemmatizer
+
+# Initialize the lemmatizer
+lemmatizer = WordNetLemmatizer()
+
+# Sample words
+words = ["running", "jumps", "easily", "fairly"]
+
+# Lemmatize the words
+lemmatized = [lemmatizer.lemmatize(word, pos='v') for word in words]
+
+print("Original words:", words)
+print("Lemmatized words:", lemmatized)
+
+=== nltk.lemmatize ===
+# The 'lemmatize' function is a method of WordNetLemmatizer
+from nltk.stem import WordNetLemmatizer
+
+lemmatizer = WordNetLemmatizer()
+
+word = "running"
+lemma = lemmatizer.lemmatize(word, pos='v')
+
+print(f"Lemma of '{word}': {lemma}")
+
+=== nltk.stem ===
+# The 'stem' function is a method of PorterStemmer
+from nltk.stem import PorterStemmer
+
+stemmer = PorterStemmer()
+
+word = "running"
+stem = stemmer.stem(word)
+
+print(f"Stem of '{word}': {stem}")
+
+=== sklearn.metrics.pairwise.cosine_similarity ===
+from sklearn.metrics.pairwise import cosine_similarity
+import numpy as np
+
+# Sample vectors
+vec1 = np.array([[1, 0, 1]])
+vec2 = np.array([[1, 1, 0]])
+
+# Calculate cosine similarity
+similarity = cosine_similarity(vec1, vec2)
+
+print("Cosine Similarity:", similarity[0][0])
+
+=== sklearn.feature_extraction.text.TfidfVectorizer ===
+
+dataSet = pd.read_excel("/content/IMDB Dataset.csv")
+X = dataSet['review']
+import nltk
+
+from nltk.corpus import stopwords
+from tensorflow.keras.preprocessing.text import Tokenizer
+from tensorflow.keras.preprocessing.sequence import pad_sequences
+from keras.utils import pad_sequences
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score, f1_score, precision_score, recall_score
+
+nltk.download('stopwords')
+
+# Get the list of stop words
+stop_words = set(stopwords.words('english'))
+
+import re
+def preprocess(text):
+    # Remove punctuations
+    text = text.translate(str.maketrans('', '', string.punctuation))
+    # Remove numbers
+    text = re.sub(r'\d+', '', text)
+    # Remove stop words
+    text = ' '.join([word for word in text.split() if word.lower() not in stop_words])
+    # Convert to lowercase
+    text = text.lower()
+    return text
+
+X = X.apply(preprocess)
+
+vectorizer = TfidfVectorizer()
+
+# Step 2: Fit and transform the text data
+X_tfidf = vectorizer.fit_transform(X.values)
+
+# Step 3: Get the vocabulary size (equivalent to tokenizer.word_index)
+vocab_size = len(vectorizer.vocabulary_) + 1  # +1 to account for padding like in the original code
+
+X = X_tfidf.toarray()
+
+dataSet['sentiment'] = (dataSet['sentiment'] == 'positive').astype(int)
+Y = dataSet['sentiment']
+
+import numpy as np
+
+# Define the Naive Bayes functions
+
+def calc_prior(features, target):
+    '''
+    Prior probability P(y)
+    Calculate prior probabilities for each class (P(y))
+    '''
+    classes = np.unique(target)
+    prior_prob = {}
+
+    # Count the instances of each class and compute the prior probabilities
+    for cls in classes:
+        prior_prob[cls] = np.sum(target == cls) / len(target)
+
+    return prior_prob
+
+def calc_statistics(features, target):
+    '''
+    Calculate mean and variance for each feature-column in X based on class y
+    Return statistics in the form of mean and variance for each class
+    '''
+    classes = np.unique(target)
+    mean = {}
+    variance = {}
+
+    # Calculate mean and variance per class
+    for cls in classes:
+        class_features = features[target == cls]
+        mean[cls] = np.mean(class_features, axis=0)
+        variance[cls] = np.var(class_features, axis=0)
+
+    return mean, variance
+
+def gaussian_density(x, mean, var):
+    '''
+    Calculate the Gaussian density function (Normal distribution)
+    For each x, compute the probability density function with given mean and variance
+    '''
+    eps = 1e-6  # Small value to avoid division by zero
+    coeff = 1.0 / np.sqrt(2.0 * np.pi * (var + eps))
+    exponent = np.exp(- (np.power(x - mean, 2) / (2 * (var + eps))))
+
+    return coeff * exponent + eps
+
+def calc_posterior(features, target, x):
+    '''
+    Posterior P(y|X) = P(X|y) * P(y)
+    Compute posterior probabilities for each class and return the one with the highest probability
+    '''
+    prior_prob = calc_prior(features, target)
+    mean, variance = calc_statistics(features, target)
+    posteriors = []
+
+    # For each class, calculate the posterior probability
+    for cls in np.unique(target):
+        prior = np.log(prior_prob[cls])
+        conditional = np.sum(np.log(gaussian_density(x, mean[cls], variance[cls])))
+        posterior = prior + conditional
+        posteriors.append(posterior)
+
+    # Return class with highest posterior probability
+    return np.argmax(posteriors)
+
+def predict(features, target, X_test):
+    '''
+    Predict the class for each sample in X_test
+    '''
+    y_pred = [calc_posterior(features, target, x) for x in X_test]
+    return y_pred
+
+def accuracy(y_test, y_pred):
+    '''
+    Calculate the accuracy of predictions by comparing them with true labels
+    '''
+    return np.mean(y_test == y_pred)
+
+X_train, X_test, y_train, y_test = train_test_split(X, Y, test_size=0.2)
+# Make predictions
+y_pred = predict(X_train, y_train, X_test)
+
+# Calculate accuracy
+acc = accuracy(y_test, y_pred)
+print(f"Accuracy: {acc}")
+
+=== gensim.models.Word2Vec ===
+from gensim.models import Word2Vec
+
+# Sample sentences
+sentences = [
+    ['this', 'is', 'the', 'first', 'sentence'],
+    ['this', 'is', 'the', 'second', 'sentence'],
+    ['and', 'this', 'is', 'the', 'third', 'one']
+]
+
+# Initialize and train the model
+model = Word2Vec(sentences, vector_size=100, window=5, min_count=1, workers=4)
+
+# Get the vector for a word
+vector = model.wv['sentence']
+
+print("Vector for 'sentence':\n", vector)
+
